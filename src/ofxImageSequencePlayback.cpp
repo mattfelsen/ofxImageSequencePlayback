@@ -96,6 +96,11 @@ void ofxImageSequencePlayback::playInReverse() {
     play();
 }
 
+void ofxImageSequencePlayback::playForward() {
+	unreverse();
+	play();
+}
+
 void ofxImageSequencePlayback::pause() {
     bPlaying = false;
     bPaused = true;
@@ -118,6 +123,11 @@ void ofxImageSequencePlayback::stop() {
 void ofxImageSequencePlayback::reverse() {
     bPingPong = false;
     bReversed = true;
+}
+
+void ofxImageSequencePlayback::unreverse() {
+    bPingPong = false;
+    bReversed = false;
 }
 
 void ofxImageSequencePlayback::setShouldPingPong(bool shouldPingPong) {

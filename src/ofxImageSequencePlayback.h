@@ -39,8 +39,7 @@
  *      Ping Ponging (play forward until the last frame, then play backward)
  *      Play sequences forward or backward.
  *      An isComplete() check to detect when your sequence has finished playing.
-            Caveat :: This will always be false if ping ponging or looping.
-
+ *           Caveat :: This will always be false if ping ponging or looping.
  *  This class makes use of it's own timing mechanism, leveraging ofxImageSequence for loading and managing frame indexes only.
  *
  */
@@ -60,12 +59,14 @@ class ofxImageSequencePlayback {
     
     void play();
     void playInReverse();
-    void pause();
+    void playForward();
+	void pause();
     void stop();
 	ofTexture& getTextureReference();
 
     void reverse();
-    
+	void unreverse();
+	
     bool isComplete() { return bComplete; }
     bool isReversed() { return bReversed; }
     bool isPingPong() { return bPingPong; }
@@ -78,6 +79,8 @@ class ofxImageSequencePlayback {
     
     void setSequence(const ofxImageSequence &sequence);
     void setSequence(const ofxImageSequence &sequence,float fps);
+   	ofxImageSequence& getSequence();
+
     void loadSequence(string pathToDir);
     void loadSequence(string pathToDir,float fps);
 	void loadSequence(string prefix, string filetype, int startIndex, int endIndex,float fps);
@@ -94,7 +97,6 @@ class ofxImageSequencePlayback {
     void setFrameIncrement(int frames) { mFrameIncrement = frames; }
     
     ofEvent<ofEventArgs> sequenceCompleted;
-   	ofxImageSequence& getSequence();
 
   protected:
     void newSequenceSetup();
