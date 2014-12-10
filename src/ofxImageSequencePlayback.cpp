@@ -203,3 +203,11 @@ void ofxImageSequencePlayback::dispatchCompleteNotification() {
 void ofxImageSequencePlayback::draw() {
     mSequence.getFrame(getCurrentFrameIndex())->draw(0,0);
 }
+
+ofTexture& ofxImageSequencePlayback::getTextureReference(){
+	return *mSequence.getFrame(getCurrentFrameIndex());
+}
+
+ofxImageSequence& ofxImageSequencePlayback::getSequence(){
+	return mSequence;
+}

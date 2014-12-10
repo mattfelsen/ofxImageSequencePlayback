@@ -62,7 +62,8 @@ class ofxImageSequencePlayback {
     void playInReverse();
     void pause();
     void stop();
-    
+	ofTexture& getTextureReference();
+
     void reverse();
     
     bool isComplete() { return bComplete; }
@@ -93,8 +94,9 @@ class ofxImageSequencePlayback {
     void setFrameIncrement(int frames) { mFrameIncrement = frames; }
     
     ofEvent<ofEventArgs> sequenceCompleted;
+   	ofxImageSequence& getSequence();
 
-protected:
+  protected:
     void newSequenceSetup();
     void dispatchCompleteNotification();
 
