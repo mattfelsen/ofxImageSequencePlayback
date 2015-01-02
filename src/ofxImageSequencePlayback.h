@@ -51,9 +51,7 @@
 
 class ofxImageSequencePlayback {
   public:
-    void update();
-    void draw();
-    
+
 	ofxImageSequencePlayback();
 	~ofxImageSequencePlayback();
     
@@ -66,7 +64,11 @@ class ofxImageSequencePlayback {
 
     void reverse();
 	void unreverse();
-	
+
+	void update();
+	void draw();
+	void draw(int x, int y);
+
     bool isComplete() { return bComplete; }
     bool isReversed() { return bReversed; }
     bool isPingPong() { return bPingPong; }
