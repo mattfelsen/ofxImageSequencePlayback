@@ -99,10 +99,12 @@ class ofxImageSequencePlayback {
     void setFrameIncrement(int frames) { mFrameIncrement = frames; }
     
     ofEvent<ofEventArgs> sequenceCompleted;
+    ofEvent<ofEventArgs> sequenceLooped;
 
   protected:
     void newSequenceSetup();
     void dispatchCompleteNotification();
+	void dispatchLoopedNotification();
 
     bool bPlaying;
     bool bPaused;

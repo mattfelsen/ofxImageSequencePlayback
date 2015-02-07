@@ -149,7 +149,11 @@ void ofxImageSequencePlayback::setShouldLoop(bool shouldLoop) {
 
 // update and draw
 void ofxImageSequencePlayback::update() {
-    float currentTime = ofGetElapsedTimef();
+
+	if(!mSequence.isLoaded()) return;
+
+	float currentTime = ofGetElapsedTimef();
+	
 
     if(mFPS && (currentTime-mLastUpdateTime) < 1.0f/mFPS) return;
     
@@ -174,6 +178,7 @@ void ofxImageSequencePlayback::update() {
             else {
                 if(bLooping) {
                     newFrameIndex = newFrameIndex - totalFrames;
+					dispatchLoopedNotification();
                 }
                 else {
                     bComplete = true;
@@ -190,6 +195,7 @@ void ofxImageSequencePlayback::update() {
             else {
                 if(bLooping) {
                     newFrameIndex = totalFrames - abs(newFrameIndex);
+					dispatchLoopedNotification();
                 }
                 else {
                     bComplete = true;
@@ -209,16 +215,24 @@ void ofxImageSequencePlayback::dispatchCompleteNotification() {
     ofNotifyEvent(sequenceCompleted, args, this);
 }
 
+void ofxImageSequencePlayback::dispatchLoopedNotification(){
+    static ofEventArgs args;
+    ofNotifyEvent(sequenceLooped, args, this);
+
+}
 
 void ofxImageSequencePlayback::draw() {
 	draw(0,0);
 }
 
 void ofxImageSequencePlayback::draw(int x, int y) {
-    mSequence.getFrame(getCurrentFrameIndex())->draw(x,y);
+	if(!mSequence.isLoaded()) return;
+
+	mSequence.getTextureForFrame(getCurrentFrameIndex()).draw(x,y);
 }
+
 ofTexture& ofxImageSequencePlayback::getTextureReference(){
-	return *mSequence.getFrame(getCurrentFrameIndex());
+	return mSequence.getTextureForFrame(getCurrentFrameIndex());
 }
 
 ofxImageSequence& ofxImageSequencePlayback::getSequence(){
