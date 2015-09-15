@@ -79,6 +79,7 @@ class ofxImageSequencePlayback {
     void setCurrentFramePercentage(float p);
     int getTotalFrames();
     
+	void setSize(float width, float height);
     void setSequence(const ofxImageSequence &sequence);
     void setSequence(const ofxImageSequence &sequence,float fps);
    	ofxImageSequence& getSequence();

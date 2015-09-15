@@ -61,6 +61,8 @@ ofxImageSequencePlayback::ofxImageSequencePlayback() {
 
 ofxImageSequencePlayback::~ofxImageSequencePlayback() { mSequence.unloadSequence(); }
 
+void ofxImageSequencePlayback::setSize(float width, float height) { mSequence.setSize(width, height); }
+
 // loading
 void ofxImageSequencePlayback::setSequence(const ofxImageSequence &sequence) { mSequence = sequence; newSequenceSetup(); }
 void ofxImageSequencePlayback::setSequence(const ofxImageSequence &sequence,float fps) { setSequence(sequence); setFPS(fps); }
