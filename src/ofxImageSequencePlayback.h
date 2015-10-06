@@ -49,11 +49,12 @@
 #include "ofMain.h"
 #include "ofxImageSequence.h"
 
-class ofxImageSequencePlayback {
+template<typename SequenceType>
+class ofxImageSequencePlayback_ {
   public:
 
-	ofxImageSequencePlayback();
-	~ofxImageSequencePlayback();
+	ofxImageSequencePlayback_();
+	~ofxImageSequencePlayback_();
     
     void play();
     void playInReverse();
@@ -79,10 +80,11 @@ class ofxImageSequencePlayback {
     void setCurrentFramePercentage(float p);
     int getTotalFrames();
     
-	void setSize(float width, float height);
-    void setSequence(const ofxImageSequence &sequence);
-    void setSequence(const ofxImageSequence &sequence,float fps);
-   	ofxImageSequence& getSequence();
+    void setSize(float width, float height);
+    void setImageType(ofImageType imageType);
+    void setSequence(const SequenceType &sequence);
+    void setSequence(const SequenceType &sequence,float fps);
+    SequenceType& getSequence();
 
     void loadSequence(string pathToDir);
     void loadSequence(string pathToDir,float fps);
@@ -121,9 +123,10 @@ class ofxImageSequencePlayback {
     float mFPS;
     float mLastUpdateTime;
     
-    ofxImageSequence mSequence;
+    SequenceType mSequence;
     
 };
 
-
-
+typedef ofxImageSequencePlayback_<ofxImageSequence> ofxImageSequencePlayback;
+typedef ofxImageSequencePlayback_<ofxShortImageSequence> ofxShortImageSequencePlayback;
+typedef ofxImageSequencePlayback_<ofxFloatImageSequence> ofxFloatImageSequencePlayback;

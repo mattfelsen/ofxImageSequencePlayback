@@ -48,7 +48,8 @@
 
 #include "ofxImageSequencePlayback.h"
 
-ofxImageSequencePlayback::ofxImageSequencePlayback() {
+template<typename SequenceType>
+ofxImageSequencePlayback_<SequenceType>::ofxImageSequencePlayback_() {
     bPlaying = false;
     bPaused = false;
     bReversed = false;
@@ -59,56 +60,78 @@ ofxImageSequencePlayback::ofxImageSequencePlayback() {
     mFrameIncrement = 1;
 }
 
-ofxImageSequencePlayback::~ofxImageSequencePlayback() { mSequence.unloadSequence(); }
+template<typename SequenceType>
+ofxImageSequencePlayback_<SequenceType>::~ofxImageSequencePlayback_() { mSequence.unloadSequence(); }
 
-void ofxImageSequencePlayback::setSize(float width, float height) { mSequence.setSize(width, height); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setSize(float width, float height) { mSequence.setSize(width, height); }
+
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setImageType(ofImageType imageType) { mSequence.setImageType(imageType); }
 
 // loading
-void ofxImageSequencePlayback::setSequence(const ofxImageSequence &sequence) { mSequence = sequence; newSequenceSetup(); }
-void ofxImageSequencePlayback::setSequence(const ofxImageSequence &sequence,float fps) { setSequence(sequence); setFPS(fps); }
-void ofxImageSequencePlayback::loadSequence(string pathToDir) { mSequence.loadSequence(pathToDir); newSequenceSetup();  }
-void ofxImageSequencePlayback::loadSequence(string prefix, string filetype, int startIndex, int endIndex) { mSequence.loadSequence(prefix, filetype, startIndex, endIndex); newSequenceSetup();  }
-void ofxImageSequencePlayback::loadSequence(string prefix, string filetype, int startIndex, int endIndex, int numDigits) { mSequence.loadSequence(prefix, filetype, startIndex, endIndex, numDigits); newSequenceSetup();  }
-void ofxImageSequencePlayback::loadSequence(string pathToDir,float fps) { loadSequence(pathToDir); setFPS(fps); }
-void ofxImageSequencePlayback::loadSequence(string prefix, string filetype, int startIndex, int endIndex,float fps) { loadSequence(prefix,filetype,startIndex,endIndex); setFPS(fps); }
-void ofxImageSequencePlayback::loadSequence(string prefix, string filetype, int startIndex, int endIndex, int numDigits,float fps) { loadSequence(prefix, filetype, startIndex, endIndex, numDigits); setFPS(fps); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setSequence(const SequenceType &sequence) { mSequence = sequence; newSequenceSetup(); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setSequence(const SequenceType &sequence,float fps) { setSequence(sequence); setFPS(fps); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string pathToDir) { mSequence.loadSequence(pathToDir); newSequenceSetup();  }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string prefix, string filetype, int startIndex, int endIndex) { mSequence.loadSequence(prefix, filetype, startIndex, endIndex); newSequenceSetup();  }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string prefix, string filetype, int startIndex, int endIndex, int numDigits) { mSequence.loadSequence(prefix, filetype, startIndex, endIndex, numDigits); newSequenceSetup();  }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string pathToDir,float fps) { loadSequence(pathToDir); setFPS(fps); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string prefix, string filetype, int startIndex, int endIndex,float fps) { loadSequence(prefix,filetype,startIndex,endIndex); setFPS(fps); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::loadSequence(string prefix, string filetype, int startIndex, int endIndex, int numDigits,float fps) { loadSequence(prefix, filetype, startIndex, endIndex, numDigits); setFPS(fps); }
 
 
-
-void ofxImageSequencePlayback::newSequenceSetup() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::newSequenceSetup() {
     mLastUpdateTime = ofGetElapsedTimef();
 }
 
 // playhead
-int ofxImageSequencePlayback::getCurrentFrameIndex() { return mSequence.getCurrentFrame(); }
-void ofxImageSequencePlayback::setCurrentFrameIndex(int index) { mSequence.setFrame(index); }
-void ofxImageSequencePlayback::setCurrentFramePercentage(float p) { mSequence.setFrameAtPercent(p); }
-int ofxImageSequencePlayback::getTotalFrames() { return mSequence.getTotalFrames(); }
+template<typename SequenceType>
+int ofxImageSequencePlayback_<SequenceType>::getCurrentFrameIndex() { return mSequence.getCurrentFrame(); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setCurrentFrameIndex(int index) { mSequence.setFrame(index); }
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setCurrentFramePercentage(float p) { mSequence.setFrameAtPercent(p); }
+template<typename SequenceType>
+int ofxImageSequencePlayback_<SequenceType>::getTotalFrames() { return mSequence.getTotalFrames(); }
 
 // playing
-void ofxImageSequencePlayback::play() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::play() {
     bPlaying = true;
     bPaused = false;
     bComplete = false;
     bPingPongForwardComplete = false;
 }
 
-void ofxImageSequencePlayback::playInReverse() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::playInReverse() {
     reverse();
     play();
 }
 
-void ofxImageSequencePlayback::playForward() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::playForward() {
 	unreverse();
 	play();
 }
 
-void ofxImageSequencePlayback::pause() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::pause() {
     bPlaying = false;
     bPaused = true;
 }
 
-void ofxImageSequencePlayback::stop() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::stop() {
     bPlaying = false;
     bPaused = false;
     bPingPongForwardComplete = false;
@@ -122,17 +145,20 @@ void ofxImageSequencePlayback::stop() {
     }
 }
 
-void ofxImageSequencePlayback::reverse() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::reverse() {
     bPingPong = false;
     bReversed = true;
 }
 
-void ofxImageSequencePlayback::unreverse() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::unreverse() {
     bPingPong = false;
     bReversed = false;
 }
 
-void ofxImageSequencePlayback::setShouldPingPong(bool shouldPingPong) {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setShouldPingPong(bool shouldPingPong) {
     bPingPong = shouldPingPong;
 
     if(bPingPong) {
@@ -140,7 +166,8 @@ void ofxImageSequencePlayback::setShouldPingPong(bool shouldPingPong) {
     }
 }
 
-void ofxImageSequencePlayback::setShouldLoop(bool shouldLoop) {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::setShouldLoop(bool shouldLoop) {
     bLooping = shouldLoop;
 
     if(bLooping) {
@@ -150,7 +177,8 @@ void ofxImageSequencePlayback::setShouldLoop(bool shouldLoop) {
 
 
 // update and draw
-void ofxImageSequencePlayback::update() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::update() {
 
 	if(!mSequence.isLoaded()) return;
 
@@ -212,31 +240,41 @@ void ofxImageSequencePlayback::update() {
     mLastUpdateTime = ofGetElapsedTimef();
 }
 
-void ofxImageSequencePlayback::dispatchCompleteNotification() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::dispatchCompleteNotification() {
     static ofEventArgs args;
     ofNotifyEvent(sequenceCompleted, args, this);
 }
 
-void ofxImageSequencePlayback::dispatchLoopedNotification(){
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::dispatchLoopedNotification(){
     static ofEventArgs args;
     ofNotifyEvent(sequenceLooped, args, this);
 
 }
 
-void ofxImageSequencePlayback::draw() {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::draw() {
 	draw(0,0);
 }
 
-void ofxImageSequencePlayback::draw(int x, int y) {
+template<typename SequenceType>
+void ofxImageSequencePlayback_<SequenceType>::draw(int x, int y) {
 	if(!mSequence.isLoaded()) return;
 
 	mSequence.getTextureForFrame(getCurrentFrameIndex()).draw(x,y);
 }
 
-ofTexture& ofxImageSequencePlayback::getTextureReference(){
+template<typename SequenceType>
+ofTexture& ofxImageSequencePlayback_<SequenceType>::getTextureReference(){
 	return mSequence.getTextureForFrame(getCurrentFrameIndex());
 }
 
-ofxImageSequence& ofxImageSequencePlayback::getSequence(){
+template<typename SequenceType>
+SequenceType& ofxImageSequencePlayback_<SequenceType>::getSequence(){
 	return mSequence;
 }
+
+template class ofxImageSequencePlayback_<ofxImageSequence>;
+template class ofxImageSequencePlayback_<ofxShortImageSequence>;
+template class ofxImageSequencePlayback_<ofxFloatImageSequence>;
