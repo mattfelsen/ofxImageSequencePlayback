@@ -110,6 +110,7 @@ void ofxImageSequencePlayback_<SequenceType>::play() {
     bPaused = false;
     bComplete = false;
     bPingPongForwardComplete = false;
+    playTime = ofGetElapsedTimef();
 }
 
 template<typename SequenceType>
@@ -196,7 +197,11 @@ void ofxImageSequencePlayback_<SequenceType>::update() {
             newFrameIndex = currentFrameIndex + (bPingPongForwardComplete ? -mFrameIncrement : mFrameIncrement);
         }
         else {
-            newFrameIndex = currentFrameIndex + (bReversed ? -mFrameIncrement : mFrameIncrement);
+//            newFrameIndex = currentFrameIndex + (bReversed ? -mFrameIncrement : mFrameIncrement);
+            float elapsed = ofGetElapsedTimef() - playTime;
+            float duration = getTotalFrames() / mFPS;
+            float percent = fmod(elapsed, duration) / duration;
+            newFrameIndex = percent * totalFrames;
         }
         
         // we're playing of forwards if the new frame > total frames.
@@ -250,7 +255,6 @@ template<typename SequenceType>
 void ofxImageSequencePlayback_<SequenceType>::dispatchLoopedNotification(){
     static ofEventArgs args;
     ofNotifyEvent(sequenceLooped, args, this);
-
 }
 
 template<typename SequenceType>
