@@ -120,6 +120,7 @@ class ofxImageSequencePlayback {
     
     float mFPS;
     float mLastUpdateTime;
+    float playTime;
     
     ofxImageSequence mSequence;
     
